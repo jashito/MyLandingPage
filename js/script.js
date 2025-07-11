@@ -3,16 +3,14 @@ const navMenu = document.getElementById('nav-menu'),
       navToggle = document.getElementById('nav-toggle'),
       navClose = document.getElementById('nav-close')
 
-/*===== MENU SHOW =====*/
-/* Validate if constant exists */
+/* Menu show */
 if(navToggle){
     navToggle.addEventListener('click', () =>{
         navMenu.classList.add('show-menu')
     })
 }
 
-/*===== MENU HIDDEN =====*/
-/* Validate if constant exists */
+/* Menu hidden */
 if(navClose){
     navClose.addEventListener('click', () =>{
         navMenu.classList.remove('show-menu')
@@ -22,28 +20,51 @@ if(navClose){
 /*=============== REMOVE MENU MOBILE ===============*/
 const navLink = document.querySelectorAll('.nav__link')
 
-function linkAction(){
+const linkAction = () =>{
     const navMenu = document.getElementById('nav-menu')
     // When we click on each nav__link, we remove the show-menu class
     navMenu.classList.remove('show-menu')
 }
 navLink.forEach(n => n.addEventListener('click', linkAction))
 
-/*=============== CHANGE BACKGROUND HEADER ===============*/
-function scrollHeader(){
-    const nav = document.getElementById('header')
-    // When the scroll is greater than 80 viewport height, add the scroll-header class to the header tag
-    if(this.scrollY >= 80) nav.classList.add('scroll-header'); else nav.classList.remove('scroll-header')
+/*=============== ADD BLUR TO HEADER ===============*/
+const blurHeader = () =>{
+    const header = document.getElementById('header')
+    // When the scroll is greater than 50 viewport height, add the blur-header class to the header tag
+    this.scrollY >= 50 ? header.classList.add('blur-header') 
+                       : header.classList.remove('blur-header')
 }
-window.addEventListener('scroll', scrollHeader)
+window.addEventListener('scroll', blurHeader)
 
 /*=============== SHOW SCROLL UP ===============*/ 
-function scrollUp(){
-    const scrollUp = document.getElementById('scroll-up');
-    // When the scroll is higher than 560 viewport height, add the show-scroll class to the a tag with the scroll-top class
-    if(this.scrollY >= 560) scrollUp.classList.add('show-scroll'); else scrollUp.classList.remove('show-scroll')
+const scrollUp = () =>{
+    const scrollUp = document.getElementById('scroll-up')
+    // When the scroll is higher than 350 viewport height, add the show-scroll class to the a tag with the scrollup class
+    this.scrollY >= 350 ? scrollUp.classList.add('show-scroll')
+                        : scrollUp.classList.remove('show-scroll')
 }
 window.addEventListener('scroll', scrollUp)
+
+/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
+const sections = document.querySelectorAll('section[id]')
+    
+const scrollActive = () =>{
+    const scrollY = window.pageYOffset
+
+    sections.forEach(current =>{
+        const sectionHeight = current.offsetHeight,
+              sectionTop = current.offsetTop - 58,
+              sectionId = current.getAttribute('id'),
+              sectionsClass = document.querySelector('.nav__menu a[href*=' + sectionId + ']')
+
+        if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
+            sectionsClass.classList.add('active-link')
+        }else{
+            sectionsClass.classList.remove('active-link')
+        }                                                    
+    })
+}
+window.addEventListener('scroll', scrollActive)
 
 /*=============== DARK LIGHT THEME ===============*/ 
 const themeButton = document.getElementById('theme-button')
@@ -75,48 +96,66 @@ themeButton.addEventListener('click', () => {
     localStorage.setItem('selected-icon', getCurrentIcon())
 })
 
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
-const sections = document.querySelectorAll('section[id]')
-
-function scrollActive(){
-    const scrollY = window.pageYOffset
-
-    sections.forEach(current =>{
-        const sectionHeight = current.offsetHeight,
-              sectionTop = current.offsetTop - 50,
-              sectionId = current.getAttribute('id')
-
-        if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
-            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add('active-link')
-        }else{
-            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.remove('active-link')
-        }
-    })
-}
-window.addEventListener('scroll', scrollActive)
-
 /*=============== SCROLL REVEAL ANIMATION ===============*/
 const sr = ScrollReveal({
     origin: 'top',
     distance: '60px',
-    duration: 2000,
-    delay: 200,
-    // reset: true
-});
+    duration: 2500,
+    delay: 400,
+    // reset: true, // Animations repeat
+})
 
-sr.reveal('.home__data, .home__social, .home__scroll', {delay: 400})
-sr.reveal('.home__image', {delay: 600, origin: 'bottom'})
-sr.reveal('.about__data', {delay: 400})
-sr.reveal('.skills__card', {interval: 100})
-sr.reveal('.projects__card', {interval: 100})
-sr.reveal('.contact__card', {interval: 100})
-sr.reveal('.contact__form', {delay: 400, origin: 'left'})
-sr.reveal('.footer__content', {delay: 400})
+// Home section animations
+sr.reveal('.home__subtitle', {delay: 100})
+sr.reveal('.home__title', {delay: 200})
+sr.reveal('.home__description', {delay: 300})
+sr.reveal('.home__info', {delay: 400})
+sr.reveal('.home__stats', {delay: 500, origin: 'bottom'})
+sr.reveal('.home__buttons', {delay: 600, origin: 'bottom'})
+sr.reveal('.home__image', {delay: 700, origin: 'right'})
+
+// Trusted by section
+sr.reveal('.trusted-by__title', {delay: 100})
+sr.reveal('.trusted-by__logos', {delay: 200, interval: 100})
+
+// Value proposition section
+sr.reveal('.value-proposition .section__title', {delay: 100})
+sr.reveal('.value-proposition .section__subtitle', {delay: 200})
+sr.reveal('.value-proposition__card', {delay: 300, interval: 200, origin: 'bottom'})
+
+// About section
+sr.reveal('.about .section__title', {delay: 100})
+sr.reveal('.about .section__subtitle', {delay: 200})
+sr.reveal('.about__description', {delay: 300, interval: 100})
+sr.reveal('.about__achievements', {delay: 400, origin: 'bottom'})
+
+// Services section
+sr.reveal('.services .section__title', {delay: 100})
+sr.reveal('.services .section__subtitle', {delay: 200})
+sr.reveal('.services__card', {delay: 300, interval: 200, origin: 'bottom'})
+
+// Industries section
+sr.reveal('.industries .section__title', {delay: 100})
+sr.reveal('.industries .section__subtitle', {delay: 200})
+sr.reveal('.industries__card', {delay: 300, interval: 100, origin: 'bottom'})
+
+// Projects section
+sr.reveal('.projects .section__title', {delay: 100})
+sr.reveal('.projects .section__subtitle', {delay: 200})
+sr.reveal('.projects__card', {delay: 300, interval: 200, origin: 'bottom'})
+sr.reveal('.projects__cta', {delay: 500, origin: 'bottom'})
+
+// Contact section
+sr.reveal('.contact .section__title', {delay: 100})
+sr.reveal('.contact .section__subtitle', {delay: 200})
+sr.reveal('.contact__card', {delay: 300, interval: 100, origin: 'left'})
+sr.reveal('.contact__form', {delay: 400, origin: 'right'})
 
 /*=============== CONTACT FORM ===============*/
 const contactForm = document.getElementById('contact-form'),
       contactName = document.getElementById('contact-name'),
       contactEmail = document.getElementById('contact-email'),
+      contactCompany = document.getElementById('contact-company'),
       contactMessage = document.getElementById('contact-message')
 
 const sendEmail = (e) => {
@@ -129,138 +168,140 @@ const sendEmail = (e) => {
         contactForm.classList.add('color-red')
         
         // Show message
-        showMessage('Por favor, completa todos los campos 📝', 'error')
+        showMessage('Por favor, completa todos los campos requeridos ❌')
     } else {
-        // Show success message
-        showMessage('¡Mensaje enviado exitosamente! ✅', 'success')
-        
-        // Add color during 3 seconds
+        // Simulate form submission (in real implementation, you would send to a server)
         contactForm.classList.add('color-green')
+        contactForm.classList.remove('color-red')
         
-        // Remove message after 3 seconds
+        // Show message and reset form
+        showMessage('¡Mensaje enviado exitosamente! Te contactaré pronto 🚀')
+        
+        // Remove message after 5 seconds
         setTimeout(() => {
+            contactForm.reset()
             contactForm.classList.remove('color-green')
-        }, 3000)
-        
-        // Clear form fields
-        contactName.value = ''
-        contactEmail.value = ''
-        contactMessage.value = ''
+        }, 5000)
     }
+}
+
+const showMessage = (message) => {
+    // Create message element
+    const messageElement = document.createElement('div')
+    messageElement.textContent = message
+    messageElement.classList.add('contact__message')
+    
+    // Insert message
+    contactForm.appendChild(messageElement)
+    
+    // Remove message after 5 seconds
+    setTimeout(() => {
+        messageElement.remove()
+    }, 5000)
 }
 
 contactForm.addEventListener('submit', sendEmail)
 
-/*=============== SHOW MESSAGE ===============*/
-function showMessage(message, type) {
-    // Remove existing messages
-    const existingMessage = document.querySelector('.contact-message')
-    if(existingMessage) {
-        existingMessage.remove()
+/*=============== TYPING ANIMATION ===============*/
+const typingTexts = [
+    'Inteligencia Artificial',
+    'Automatización B2B',
+    'Desarrollo de Software',
+    'Consultoría Estratégica'
+]
+
+let textIndex = 0
+let charIndex = 0
+let isDeleting = false
+const typingSpeed = 100
+const deletingSpeed = 50
+const pauseTime = 2000
+
+const typeWriter = () => {
+    const currentText = typingTexts[textIndex]
+    const typingElement = document.querySelector('.home__description .gradient-text:last-child')
+    
+    if (!typingElement) return
+    
+    if (isDeleting) {
+        typingElement.textContent = currentText.substring(0, charIndex - 1)
+        charIndex--
+    } else {
+        typingElement.textContent = currentText.substring(0, charIndex + 1)
+        charIndex++
     }
     
-    // Create message element
-    const messageElement = document.createElement('div')
-    messageElement.classList.add('contact-message', `contact-message--${type}`)
-    messageElement.textContent = message
+    let speed = isDeleting ? deletingSpeed : typingSpeed
     
-    // Add styles
-    messageElement.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 1rem 1.5rem;
-        border-radius: 0.5rem;
-        color: white;
-        font-weight: 500;
-        z-index: 1000;
-        animation: slideInRight 0.3s ease-out;
-        ${type === 'success' ? 'background-color: #10b981;' : 'background-color: #ef4444;'}
-    `
+    if (!isDeleting && charIndex === currentText.length) {
+        speed = pauseTime
+        isDeleting = true
+    } else if (isDeleting && charIndex === 0) {
+        isDeleting = false
+        textIndex = (textIndex + 1) % typingTexts.length
+    }
     
-    // Add to body
-    document.body.appendChild(messageElement)
-    
-    // Remove after 5 seconds
-    setTimeout(() => {
-        messageElement.style.animation = 'slideOutRight 0.3s ease-out'
-        setTimeout(() => {
-            if(messageElement.parentNode) {
-                messageElement.remove()
-            }
-        }, 300)
-    }, 5000)
+    setTimeout(typeWriter, speed)
 }
 
-/*=============== DOWNLOAD CV ===============*/
-const downloadCV = document.getElementById('download-cv')
-
-downloadCV.addEventListener('click', (e) => {
-    e.preventDefault()
-    showMessage('Función de descarga de CV próximamente disponible 📄', 'info')
+// Start typing animation when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(typeWriter, 1000)
 })
 
 /*=============== SMOOTH SCROLLING ===============*/
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const target = document.querySelector(this.getAttribute('href'));
+        e.preventDefault()
+        const target = document.querySelector(this.getAttribute('href'))
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
-            });
+            })
         }
-    });
-});
-
-/*=============== TYPING ANIMATION ===============*/
-const typingText = document.querySelector('.home__description-highlight')
-if (typingText) {
-    const texts = ['Inteligencia Artificial', 'Automatización B2B', 'Desarrollo de Software', 'Consultoría Estratégica']
-    let textIndex = 0
-    let charIndex = 0
-    let isDeleting = false
-    
-    function typeWriter() {
-        const currentText = texts[textIndex]
-        
-        if (isDeleting) {
-            typingText.textContent = currentText.substring(0, charIndex - 1)
-            charIndex--
-        } else {
-            typingText.textContent = currentText.substring(0, charIndex + 1)
-            charIndex++
-        }
-        
-        let typeSpeed = isDeleting ? 50 : 100
-        
-        if (!isDeleting && charIndex === currentText.length) {
-            typeSpeed = 2000
-            isDeleting = true
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false
-            textIndex = (textIndex + 1) % texts.length
-        }
-        
-        setTimeout(typeWriter, typeSpeed)
-    }
-    
-    // Start typing animation after page load
-    setTimeout(typeWriter, 1000)
-}
+    })
+})
 
 /*=============== PARALLAX EFFECT ===============*/
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset
-    const parallax = document.querySelector('.home')
+    const parallaxElements = document.querySelectorAll('.home__image')
     
-    if (parallax) {
-        const speed = scrolled * 0.5
-        parallax.style.transform = `translateY(${speed}px)`
-    }
+    parallaxElements.forEach(element => {
+        const speed = 0.5
+        element.style.transform = `translateY(${scrolled * speed}px)`
+    })
 })
+
+/*=============== COUNTER ANIMATION ===============*/
+const animateCounters = () => {
+    const counters = document.querySelectorAll('.home__stat-number, .about__achievement-number, .projects__metric-number')
+    
+    counters.forEach(counter => {
+        const target = parseInt(counter.textContent.replace(/[^\d]/g, ''))
+        const increment = target / 100
+        let current = 0
+        
+        const updateCounter = () => {
+            if (current < target) {
+                current += increment
+                if (counter.textContent.includes('+')) {
+                    counter.textContent = Math.ceil(current) + '+'
+                } else if (counter.textContent.includes('%')) {
+                    counter.textContent = Math.ceil(current) + '%'
+                } else {
+                    counter.textContent = Math.ceil(current)
+                }
+                setTimeout(updateCounter, 20)
+            } else {
+                counter.textContent = counter.textContent // Reset to original
+            }
+        }
+        
+        updateCounter()
+    })
+}
 
 /*=============== INTERSECTION OBSERVER FOR ANIMATIONS ===============*/
 const observerOptions = {
@@ -271,148 +312,127 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in-up')
+            entry.target.classList.add('animate')
+            
+            // Trigger counter animation for stats sections
+            if (entry.target.classList.contains('home__stats') || 
+                entry.target.classList.contains('about__achievements')) {
+                animateCounters()
+            }
         }
     })
 }, observerOptions)
 
 // Observe elements for animation
-document.querySelectorAll('.skills__card, .projects__card, .contact__card').forEach(el => {
+document.querySelectorAll('.home__stats, .about__achievements, .value-proposition__card, .services__card').forEach(el => {
     observer.observe(el)
 })
 
-/*=============== PRELOADER ===============*/
-window.addEventListener('load', () => {
-    const preloader = document.querySelector('.preloader')
-    if (preloader) {
-        preloader.style.opacity = '0'
-        setTimeout(() => {
-            preloader.style.display = 'none'
-        }, 500)
-    }
-})
-
-/*=============== ADD SCROLL REVEAL CDN ===============*/
-// Add ScrollReveal CDN if not already included
-if (typeof ScrollReveal === 'undefined') {
-    const script = document.createElement('script')
-    script.src = 'https://unpkg.com/scrollreveal'
-    script.onload = () => {
-        // Initialize ScrollReveal after loading
-        const sr = ScrollReveal({
-            origin: 'top',
-            distance: '60px',
-            duration: 2000,
-            delay: 200,
-        });
-
-        sr.reveal('.home__data, .home__social, .home__scroll', {delay: 400})
-        sr.reveal('.home__image', {delay: 600, origin: 'bottom'})
-        sr.reveal('.about__data', {delay: 400})
-        sr.reveal('.skills__card', {interval: 100})
-        sr.reveal('.projects__card', {interval: 100})
-        sr.reveal('.contact__card', {interval: 100})
-        sr.reveal('.contact__form', {delay: 400, origin: 'left'})
-        sr.reveal('.footer__content', {delay: 400})
-    }
-    document.head.appendChild(script)
-}
-
-/*=============== PERFORMANCE OPTIMIZATIONS ===============*/
-// Debounce function for scroll events
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Apply debounce to scroll events
-window.addEventListener('scroll', debounce(scrollHeader, 10))
-window.addEventListener('scroll', debounce(scrollUp, 10))
-window.addEventListener('scroll', debounce(scrollActive, 10))
-
-/*=============== ACCESSIBILITY IMPROVEMENTS ===============*/
-// Add keyboard navigation support
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        // Close mobile menu on escape
-        const navMenu = document.getElementById('nav-menu')
-        if (navMenu.classList.contains('show-menu')) {
-            navMenu.classList.remove('show-menu')
-        }
-    }
-})
-
-// Add focus management for mobile menu
-const navToggleBtn = document.getElementById('nav-toggle')
-const navCloseBtn = document.getElementById('nav-close')
-
-if (navToggleBtn) {
-    navToggleBtn.addEventListener('click', () => {
-        setTimeout(() => {
-            const firstNavLink = document.querySelector('.nav__link')
-            if (firstNavLink) {
-                firstNavLink.focus()
-            }
-        }, 100)
-    })
-}
-
 /*=============== FORM VALIDATION ===============*/
-function validateEmail(email) {
+const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return re.test(email)
 }
 
-function validateForm() {
+const validateForm = () => {
     const name = contactName.value.trim()
     const email = contactEmail.value.trim()
     const message = contactMessage.value.trim()
     
     let isValid = true
-    let errors = []
     
-    if (name.length < 2) {
-        errors.push('El nombre debe tener al menos 2 caracteres')
+    // Reset previous error states
+    document.querySelectorAll('.contact__form-input').forEach(input => {
+        input.classList.remove('error')
+    })
+    
+    if (name === '') {
+        contactName.classList.add('error')
         isValid = false
     }
     
-    if (!validateEmail(email)) {
-        errors.push('Por favor, ingresa un email válido')
+    if (email === '' || !validateEmail(email)) {
+        contactEmail.classList.add('error')
         isValid = false
     }
     
-    if (message.length < 10) {
-        errors.push('El mensaje debe tener al menos 10 caracteres')
+    if (message === '') {
+        contactMessage.classList.add('error')
         isValid = false
-    }
-    
-    if (!isValid) {
-        showMessage(errors.join('. '), 'error')
     }
     
     return isValid
 }
 
-// Update form submission with validation
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault()
-        
-        if (validateForm()) {
-            showMessage('¡Mensaje enviado exitosamente! ✅', 'success')
-            
-            // Clear form
-            contactName.value = ''
-            contactEmail.value = ''
-            contactMessage.value = ''
+// Add real-time validation
+contactEmail.addEventListener('blur', () => {
+    if (contactEmail.value && !validateEmail(contactEmail.value)) {
+        contactEmail.classList.add('error')
+    } else {
+        contactEmail.classList.remove('error')
+    }
+})
+
+/*=============== LOADING ANIMATION ===============*/
+window.addEventListener('load', () => {
+    document.body.classList.add('loaded')
+})
+
+/*=============== PERFORMANCE OPTIMIZATIONS ===============*/
+// Debounce scroll events
+const debounce = (func, wait) => {
+    let timeout
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout)
+            func(...args)
         }
+        clearTimeout(timeout)
+        timeout = setTimeout(later, wait)
+    }
+}
+
+// Apply debounce to scroll events
+window.addEventListener('scroll', debounce(() => {
+    blurHeader()
+    scrollUp()
+    scrollActive()
+}, 10))
+
+/*=============== ACCESSIBILITY IMPROVEMENTS ===============*/
+// Keyboard navigation for mobile menu
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('show-menu')) {
+        navMenu.classList.remove('show-menu')
+    }
+})
+
+// Focus management for mobile menu
+navToggle?.addEventListener('click', () => {
+    setTimeout(() => {
+        const firstLink = navMenu.querySelector('.nav__link')
+        firstLink?.focus()
+    }, 100)
+})
+
+/*=============== PRELOAD CRITICAL RESOURCES ===============*/
+const preloadImages = () => {
+    const images = [
+        'assets/images/background.jpg',
+        'assets/icons/power_platform.webp',
+        'assets/icons/llm.jpg',
+        'assets/icons/low_code.png',
+        'assets/icons/saas.jpg',
+        'assets/icons/iac.jpg',
+        'assets/icons/b2b_automation.jpg'
+    ]
+    
+    images.forEach(src => {
+        const img = new Image()
+        img.src = src
     })
 }
+
+// Preload images when page loads
+document.addEventListener('DOMContentLoaded', preloadImages)
 
