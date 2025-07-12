@@ -203,51 +203,52 @@ const showMessage = (message) => {
 contactForm.addEventListener('submit', sendEmail)
 
 /*=============== TYPING ANIMATION ===============*/
-const typingTexts = [
-    'Inteligencia Artificial',
-    'Automatización B2B',
-    'Desarrollo de Software',
-    'Consultoría Estratégica'
-]
+// Disabled typing animation to prevent text duplication
+// const typingTexts = [
+//     'Inteligencia Artificial',
+//     'Automatización B2B',
+//     'Desarrollo de Software',
+//     'Consultoría Estratégica'
+// ]
 
-let textIndex = 0
-let charIndex = 0
-let isDeleting = false
-const typingSpeed = 100
-const deletingSpeed = 50
-const pauseTime = 2000
+// let textIndex = 0
+// let charIndex = 0
+// let isDeleting = false
+// const typingSpeed = 100
+// const deletingSpeed = 50
+// const pauseTime = 2000
 
-const typeWriter = () => {
-    const currentText = typingTexts[textIndex]
-    const typingElement = document.querySelector('.home__description .gradient-text:last-child')
+// const typeWriter = () => {
+//     const currentText = typingTexts[textIndex]
+//     const typingElement = document.querySelector('.home__description .gradient-text:last-child')
     
-    if (!typingElement) return
+//     if (!typingElement) return
     
-    if (isDeleting) {
-        typingElement.textContent = currentText.substring(0, charIndex - 1)
-        charIndex--
-    } else {
-        typingElement.textContent = currentText.substring(0, charIndex + 1)
-        charIndex++
-    }
+//     if (isDeleting) {
+//         typingElement.textContent = currentText.substring(0, charIndex - 1)
+//         charIndex--
+//     } else {
+//         typingElement.textContent = currentText.substring(0, charIndex + 1)
+//         charIndex++
+//     }
     
-    let speed = isDeleting ? deletingSpeed : typingSpeed
+//     let speed = isDeleting ? deletingSpeed : typingSpeed
     
-    if (!isDeleting && charIndex === currentText.length) {
-        speed = pauseTime
-        isDeleting = true
-    } else if (isDeleting && charIndex === 0) {
-        isDeleting = false
-        textIndex = (textIndex + 1) % typingTexts.length
-    }
+//     if (!isDeleting && charIndex === currentText.length) {
+//         speed = pauseTime
+//         isDeleting = true
+//     } else if (isDeleting && charIndex === 0) {
+//         isDeleting = false
+//         textIndex = (textIndex + 1) % typingTexts.length
+//     }
     
-    setTimeout(typeWriter, speed)
-}
+//     setTimeout(typeWriter, speed)
+// }
 
 // Start typing animation when page loads
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(typeWriter, 1000)
-})
+// document.addEventListener('DOMContentLoaded', () => {
+//     setTimeout(typeWriter, 1000)
+// })
 
 /*=============== SMOOTH SCROLLING ===============*/
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -264,15 +265,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 })
 
 /*=============== PARALLAX EFFECT ===============*/
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset
-    const parallaxElements = document.querySelectorAll('.home__image')
+// Disabled parallax effect to prevent background image movement
+// window.addEventListener('scroll', () => {
+//     const scrolled = window.pageYOffset
+//     const parallaxElements = document.querySelectorAll('.home__image')
     
-    parallaxElements.forEach(element => {
-        const speed = 0.5
-        element.style.transform = `translateY(${scrolled * speed}px)`
-    })
-})
+//     parallaxElements.forEach(element => {
+//         const speed = 0.5
+//         element.style.transform = `translateY(${scrolled * speed}px)`
+//     })
+// })
 
 /*=============== COUNTER ANIMATION ===============*/
 const animateCounters = () => {
